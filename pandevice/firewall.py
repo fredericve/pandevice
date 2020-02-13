@@ -21,7 +21,7 @@
 import itertools
 import re
 import logging
-import xml.etree.ElementTree as ET
+import lxml.etree as ET
 from decimal import Decimal
 
 from pandevice import getlogger

@@ -105,7 +105,7 @@ These methods provide information about an object in the configuration tree.
 +--------------------------------------------------+-----------------------------------------------------------+
 | :py:meth:`~pandevice.base.PanObject.xpath`       | Return the XPath of this object                           |
 +--------------------------------------------------+-----------------------------------------------------------+
-| :py:meth:`~pandevice.base.PanObject.element`     | Return the XML of this object as an ElementTree           |
+| :py:meth:`~pandevice.base.PanObject.element`     | Return the XML of this object as an lxml.etree            |
 +--------------------------------------------------+-----------------------------------------------------------+
 | :py:meth:`~pandevice.base.PanObject.element_str` | Return the XML of this object as a string                 |
 +--------------------------------------------------+-----------------------------------------------------------+

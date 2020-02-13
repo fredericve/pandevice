@@ -26,7 +26,7 @@ import itertools
 import re
 import sys
 import time
-import xml.etree.ElementTree as ET
+import lxml.etree as ET
 import base64
 import hashlib
 
@@ -385,7 +385,7 @@ class PanObject(object):
             comparable (bool): Element will be used in a comparison with another.
 
         Returns:
-            xml.etree.ElementTree: An ElementTree instance representing the
+            lxml.etree: An ElementTree instance representing the
                 xml form of this object and its children
 
         """
@@ -495,7 +495,7 @@ class PanObject(object):
         """Generator function to turn children into XML objects.
 
         Yields:
-            xml.etree.ElementTree: The next child as an ``ElementTree`` object.
+            lxml.etree: The next child as an ``ElementTree`` object.
 
         """
         for child in self.children:
@@ -787,7 +787,7 @@ class PanObject(object):
         Args:
             running_config (bool): Set to True to refresh from the running
                 configuration (Default: False)
-            xml (xml.etree.ElementTree): XML from a configuration to use
+            xml (lxml.etree): XML from a configuration to use
                 instead of refreshing from a live device
             refresh_children (bool): Set to False to prevent refresh of child
                 objects (Default: True)
@@ -1245,7 +1245,7 @@ class PanObject(object):
         this method will generate 5 instances of the class AddressObject.
 
         Args:
-            xml (xml.etree.ElementTree): A section of XML configuration from a
+            xml (lxml.etree): A section of XML configuration from a
                 firewall or Panorama.  It should not contain the response or
                 result tags.
             refresh_children (bool): Refresh children objects or not.
@@ -1300,7 +1300,7 @@ class PanObject(object):
         """Classic class method to parse XML to variables.
 
         Args:
-            xml (xml.etree.ElementTree): the xml to retrieve variables from.
+            xml (lxml.etree): the xml to retrieve variables from.
             variables (list): a list of ``VarPath`` instances to parse
                 from the given XML.  If this is not specified, then all of the
                 variables that this ``PanObject`` contains are parsed.
@@ -1554,12 +1554,12 @@ class PanObject(object):
         3) Individual Nones in the elements iterable are ignored
 
         Args:
-            root (xml.etree.ElementTree): The root element.
-            elements (iterable): Other xml.etree.ElementTree instances (or
+            root (lxml.etree): The root element.
+            elements (iterable): Other lxml.etree instances (or
                 None) that should be merged into ``root`` as well.
 
         Returns:
-            xml.etree.ElementTree: The final merged root element.
+            lxml.etree: The final merged root element.
 
         """
         for e in elements:
@@ -2323,14 +2323,14 @@ class VersionedPanObject(PanObject):
         return (paths, stubs, settings)
 
     def element(self, with_children=True, comparable=False):
-        """Return an xml.etree.ElementTree for this object and its children.
+        """Return an lxml.etree for this object and its children.
 
         Args:
             with_children (bool): Include the children objects.
             comparable (bool): Element will be used in a comparison with another.
 
         Returns:
-            xml.etree.ElementTree for this object.
+            lxml.etree for this object.
 
         """
         ans = self._root_element()
@@ -2464,7 +2464,7 @@ class VersionedPanObject(PanObject):
         """Parse the given XML into this object's parameters.
 
         Args:
-            xml (xml.etree.ElementTree): The XML to parse values from.
+            xml (lxml.etree): The XML to parse values from.
 
         """
         settings = {}
@@ -2509,9 +2509,9 @@ class VersionedPanObject(PanObject):
         for param in params:
             param.value = settings.get(param.name)
 
-    def element_str(self):
+    def element_str(self, pretty_print=False):
         """The XML form of this object (and its children) as a string."""
-        return ET.tostring(self.element(), encoding='utf-8')
+        return ET.tostring(self.element(), encoding='utf-8', pretty_print=pretty_print)
 
     def __getattr__(self, name):
         params = super(VersionedPanObject, self).__getattribute__('_params')
@@ -2670,7 +2670,7 @@ class VarPath(object):
         """Sets the final elm's .text as appropriate given the vartype.
 
         Args:
-            elm (xml.etree.ElementTree.Element): The element whose .text to set.
+            elm (lxml.etree.Element): The element whose .text to set.
             value (various): The value to put in the .text, conforming to the vartype of this parameter.
             comparable (bool): Make updates for element string comparisons.  For entry and member vartypes, sort the entries (True) or leave them as-is (False).
 
@@ -2764,17 +2764,17 @@ class ParamPath(object):
             yield str(value)
 
     def element(self, elm, settings, comparable=False):
-        """Create the xml.etree.ElementTree for this parameter.
+        """Create the lxml.etree for this parameter.
 
         Args:
-            elm (xml.etree.ElementTree): the root node for which to append
+            elm (lxml.etree): the root node for which to append
                 onto this param's XML.
             settings (dict): All parameter settings for the
                 ``VersionedPanObject``.
             comparable (bool): Make necessary adjustments to the XML for comparison's sake.
 
         Returns:
-            xml.etree.ElementTree: The ``elm`` passed in, modified to contain
+            lxml.etree: The ``elm`` passed in, modified to contain
             this parameter in the XML.  If this param should not be contained
             in the full ``VersionedPanObject``'s XML, then None is returned.
 
@@ -2846,7 +2846,7 @@ class ParamPath(object):
         dict passed in to this function.
 
         Args:
-            xml (xml.etree.ElementTree): The XML to parse.
+            xml (lxml.etree): The XML to parse.
             settings (dict): Current known values for this object's parameters.
             possibilities (dict): A dict where the key is a parameter's name,
                 and the value is a list of strings that that param could be
@@ -2926,7 +2926,7 @@ class ParamPath(object):
         """Sets the final elm's .text as appropriate given the vartype.
 
         Args:
-            elm (xml.etree.ElementTree.Element): The element whose .text to set.
+            elm (lxml.etree.Element): The element whose .text to set.
             value (various): The value to put in the .text, conforming to the vartype of this parameter.
             comparable (bool): Make updates for element string comparisons.  For encrypted fields, if the text should be set to a password hash (True) or left as a basestring (False).  For entry and member vartypes, sort the entries (True) or leave them as-is (False).
 
@@ -2966,7 +2966,7 @@ class ParamPath(object):
         The value parsed is saved into the ``settings`` dict.
 
         Args:
-            elm (xml.etree.ElementTree): The final (deepest) tag in the XML
+            elm (lxml.etree): The final (deepest) tag in the XML
                 document passed in to ``parse_xml()`` that contains the actual
                 value to parse out for this parameter.
             settings (dict): The dict where the parsed value will be saved.
@@ -3602,7 +3602,7 @@ class PanDevice(PanObject):
             retry_on_peer (bool): Try on active Firewall first, then try on passive Firewall
 
         Returns:
-            xml.etree.ElementTree: The result of the operational command. May also return a string of XML if xml=True
+            lxml.etree: The result of the operational command. May also return a string of XML if xml=True
 
         """
         element = self.xapi.op(cmd, vsys, cmd_xml, extra_qs, retry_on_peer=retry_on_peer)
@@ -4755,7 +4755,7 @@ class PanDevice(PanObject):
             When it comes to licensing, it's been observed that PAN-OS can
             send back a response with Content-Type: application/xml, but the
             content isn't actually XML, it's plain text.  When this happens,
-            pan-python wraps the xml.etree.ElementTree error and returns
+            pan-python wraps the lxml.etree error and returns
             a PanXapiError instead that mentions the parsing problem.
 
             So, check the not-actually-XML response sent back to see if the

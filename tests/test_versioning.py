@@ -3,7 +3,7 @@ try:
 except ImportError:
     import mock
 import unittest
-import xml.etree.ElementTree as ET
+import lxml.etree as ET
 
 import pandevice.base
 import pandevice.device

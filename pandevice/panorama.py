@@ -19,7 +19,7 @@
 
 # import modules
 import logging
-import xml.etree.ElementTree as ET
+import lxml.etree as ET
 from copy import deepcopy
 
 # import other parts of this pandevice package

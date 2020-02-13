@@ -67,7 +67,7 @@ Operational commands
 --------------------
 
 Perform operational commands using the ``op`` method on a PanDevice. The return value is
-an xml.etree.ElementTree object::
+an lxml.etree object::
 
     from pandevice import firewall
     fw = firewall.Firewall('10.0.0.1', 'admin', 'mypassword')

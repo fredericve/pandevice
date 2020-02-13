@@ -17,7 +17,7 @@
 
 """User-ID and Dynamic Address Group updates using the User-ID API"""
 
-import xml.etree.ElementTree as ET
+import lxml.etree as ET
 from copy import deepcopy
 
 from pandevice import getlogger

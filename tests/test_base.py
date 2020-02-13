@@ -17,7 +17,7 @@ except ImportError:
     import mock
 import unittest
 import uuid
-import xml.etree.ElementTree as ET
+import lxml.etree as ET
 
 import pan.xapi
 import pandevice.base as Base

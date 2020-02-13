@@ -49,7 +49,10 @@ setup(
     packages=["pandevice"],
     package_dir={"": "."},
     package_data={},
-    install_requires=["pan-python==0.*,>=0.10.0"],
+    install_requires=[
+        "pan-python==0.*,>=0.10.0",
+        "lxml"
+    ],
     extras_require={
         "dev": [
             'black==19.*,>=19.10.0; python_version == "3.*" and python_version >= "3.6.0"',

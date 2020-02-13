@@ -20,7 +20,7 @@
 # import modules
 import logging
 import inspect
-import xml.etree.ElementTree as ET
+import lxml.etree as ET
 
 import pan.xapi
 from pandevice import getlogger, isstring

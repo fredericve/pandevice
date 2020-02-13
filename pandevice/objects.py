@@ -20,7 +20,7 @@
 # import modules
 import re
 import logging
-import xml.etree.ElementTree as ET
+import lxml.etree as ET
 import pandevice
 from pandevice import getlogger
 from pandevice.base import PanObject, Root, MEMBER, ENTRY

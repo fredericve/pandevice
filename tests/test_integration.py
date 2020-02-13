@@ -27,7 +27,7 @@ import pandevice.network
 import pandevice.objects
 import pandevice.panorama
 
-import xml.etree.ElementTree as ET
+import lxml.etree as ET
 
 
 class TestTemplates(unittest.TestCase):
@@ -41,7 +41,7 @@ class TestTemplates(unittest.TestCase):
             '<entry name="blah"><description>my description</description>',
             '<settings><default-vsys>vsys1</default-vsys></settings>',
             '<config><devices><entry name="localhost.localdomain"><vsys>',
-            '<entry name="vsys1"><import><network><interface /></network>',
+            '<entry name="vsys1"><import><network><interface/></network>',
             '</import></entry></vsys><network><virtual-router>',
             '<entry name="some vr"><admin-dists><static>42</static>',
             '<ebgp>21</ebgp></admin-dists></entry></virtual-router>',
@@ -167,11 +167,11 @@ class TestElementStr_7_0(unittest.TestCase):
             b'<netmask>255.255.255.0</netmask><port>ethernet1/6</port>',
             b'<gateway>10.5.1.2</gateway><link-speed>1000</link-speed>',
             b'<link-duplex>auto</link-duplex><monitor-hold-time>7',
-            b'</monitor-hold-time></ha1><ha1-backup /><ha2>',
+            b'</monitor-hold-time></ha1><ha1-backup/><ha2>',
             b'<ip-address>10.6.1.1</ip-address><netmask>255.255.255.0',
             b'</netmask><port>ethernet1/7</port><gateway>10.6.1.2</gateway>',
             b'<link-speed>1000</link-speed><link-duplex>auto</link-duplex>',
-            b'</ha2><ha2-backup /><ha3 /></interface></high-availability>',
+            b'</ha2><ha2-backup/><ha3/></interface></high-availability>',
         ])
 
         h1o = pandevice.ha.HA1(
@@ -222,7 +222,7 @@ class TestElementStr_7_0(unittest.TestCase):
     # 3) EthernetInterface
     def test_element_str_from_ethernetinterface(self):
         expected = b''.join([
-            b'<entry name="ethernet1/1"><layer3><ip><entry name="10.1.1.1" />',
+            b'<entry name="ethernet1/1"><layer3><ip><entry name="10.1.1.1"/>',
             b'</ip></layer3><link-speed>1000</link-speed><link-duplex>auto',
             b'</link-duplex><link-state>auto</link-state></entry>',
         ])
@@ -238,9 +238,9 @@ class TestElementStr_7_0(unittest.TestCase):
         '''EthernetInterface > Layer3Subinterface > Arp'''
         expected = b''.join([
             b'<entry name="ethernet1/1"><layer3><ip>',
-            b'<entry name="10.3.6.12" /></ip><units>',
+            b'<entry name="10.3.6.12"/></ip><units>',
             b'<entry name="ethernet1/1.355"><tag>355</tag><ip>',
-            b'<entry name="10.20.30.40/24" /></ip><mtu>1500</mtu>',
+            b'<entry name="10.20.30.40/24"/></ip><mtu>1500</mtu>',
             b'<adjust-tcp-mss>yes</adjust-tcp-mss><arp>',
             b'<entry name="10.5.10.15"><hw-address>00:30:48:52:cd:dc',
             b'</hw-address></entry></arp></entry></units></layer3></entry>',
@@ -287,7 +287,7 @@ class TestElementStr_7_0(unittest.TestCase):
     def test_element_str_from_firewall_with_pano_parent_and_systemsettings_child(self):
         expected = b''.join([
             b'<entry name="Serial"><vsys>',
-            b'<entry name="vsys1" /></vsys></entry>',
+            b'<entry name="vsys1"/></vsys></entry>',
         ])
 
         fw = pandevice.firewall.Firewall(
@@ -320,7 +320,7 @@ class TestElementStr_7_0(unittest.TestCase):
 
     def test_element_str_from_firewall_with_dg_pano_parents_and_multi_vsys(self):
         expected = b''.join([
-            b'<entry name="serial"><vsys><entry name="vsys3" />',
+            b'<entry name="serial"><vsys><entry name="vsys3"/>',
             b'</vsys></entry>',
         ])
 
